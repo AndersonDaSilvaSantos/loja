@@ -1,9 +1,0 @@
-package com.system.websystem.repository;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-
-import com.system.websystem.models.Cliente;
-
-public interface ClienteRepository extends JpaRepository<Cliente, Long> {
-
-}

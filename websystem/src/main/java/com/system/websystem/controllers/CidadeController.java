@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -14,52 +13,74 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.system.websystem.models.Cidade;
+import com.system.websystem.models.Estado;
 import com.system.websystem.repository.CidadeRepository;
+import com.system.websystem.repository.EstadoRepository;
+
+
+
+
 
 @Controller
 public class CidadeController {
-
+	
 	@Autowired
 	private CidadeRepository repository;
-
-	@GetMapping("/addcidade")
+	
+	@Autowired
+	private EstadoRepository repositoryEstado;
+	
+	@GetMapping("/cidades")
+	public ModelAndView buscarTodos() {
+		
+		ModelAndView mv = new ModelAndView("/cidadeLista");
+		mv.addObject("cidades", repository.findAll());
+				
+		
+		return mv;
+	}
+	
+	@GetMapping("/adicionarCidade")
 	public ModelAndView add(Cidade cidade) {
-		ModelAndView mv = new ModelAndView(addcidade);
-		mv.addObject(cidade);
-		return mv;
-	}
-
-	@GetMapping("/cidade")
-	public ModelAndView listar() {
-		ModelAndView mv = new ModelAndView("/cidade");
-		List<Cidade> cidade = repository.findAll();
+		
+		ModelAndView mv = new ModelAndView("/adicionarCidade");
 		mv.addObject("cidade", cidade);
+		
+		List<Estado> listaEstado = repositoryEstado.findAll();
+		mv.addObject("estados",listaEstado);
+		
 		return mv;
 	}
-
-	@GetMapping("/editarcidade/{id}")
+	
+	@GetMapping("/editarCidade/{id}")
 	public ModelAndView edit(@PathVariable("id") Long id) {
-		Optional<Cidade> c = repository.findById(id);
-		Cidade cidade = c.get();
-		return add(cidade);
+		
+		Optional<Cidade> cidade = repository.findById(id);
+		Cidade c = cidade.get();	
+		
+		return add(c);
 	}
-
-	@GetMapping("/removercidade/{id}")
+	
+	@GetMapping("/removerCidade/{id}")
 	public ModelAndView delete(@PathVariable("id") Long id) {
-		Optional<Cidade> c = repository.findById(id);
-		Cidade cidade = c.get();
-		repository.delete(cidade);
-		return listar();
+		
+		Optional<Cidade> cidade = repository.findById(id);
+		Cidade c = cidade.get();
+		repository.delete(c);	
+		
+		return buscarTodos();
 	}
 
-	@PostMapping("/salvarcidade")
+	@PostMapping("/salvarCidade")
 	public ModelAndView save(@Valid Cidade cidade, BindingResult result) {
-
-		if (result.hasErrors()) {
+		
+		if(result.hasErrors()) {
 			return add(cidade);
 		}
+		
 		repository.saveAndFlush(cidade);
-		return listar();
+		
+		return buscarTodos();
 	}
-
+	
 }
