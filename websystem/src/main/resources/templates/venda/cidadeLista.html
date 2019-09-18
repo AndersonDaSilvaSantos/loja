@@ -4,7 +4,7 @@
 	<meta charset="UTF-8" />
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta name="viewport" content="width=device-width" />
-	<title>Posts</title>
+	<title>Lista de Cidades</title>
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"></link>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
@@ -31,8 +31,8 @@
 							<td th:text="${cidade.estado}"></td>											
 							<td>
 								<div class="btn-group pull-right">
-							   		<a class="btn btn-sm btn-primary" th:href="@{/editarCidade/{id}(id=${cidade.id})}" >Editar</a>
-							   		<a class="delete btn btn-sm btn-danger" th:href="@{/removerCidade/{id}(id=${cidade.id})}">Excluir</a>
+							   		<a class="btn btn-warning btn-xs" th:href="@{editarCidade/{id}(id=${cidade.id})}">Editar</a>
+				 			        <a class="btn btn-danger btn-xs" th:href="@{removerCidade/{id}(id=${cidade.id})}">Remover</a>
 							   </div>
 							</td>
 						</tr>
